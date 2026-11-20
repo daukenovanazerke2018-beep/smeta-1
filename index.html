@@ -62,6 +62,26 @@
     <section class="card screen-only service-catalog" aria-labelledby="catalog-title" aria-describedby="catalog-hint">
       <h2 id="catalog-title">Каталог услуг</h2>
       <p id="catalog-hint" class="hint">Цены указаны в тенге. Нажмите «Добавить в смету», чтобы создать отдельную позицию. Количество и цену можно изменить.</p>
+      <button id="add-custom-service" type="button">Добавить свою услугу</button>
+      <p id="catalog-status" role="status" aria-live="polite"></p>
+      <form id="service-form" class="service-form" aria-labelledby="service-form-title" novalidate hidden>
+        <h3 id="service-form-title">Новая услуга</h3>
+        <div class="service-form-fields">
+          <label>Название услуги<input id="custom-service-name" type="text" maxlength="120" required aria-describedby="service-form-error"></label>
+          <label>Категория<select id="custom-service-category" required aria-describedby="service-form-error">
+            <option value="consulting">Консультации</option>
+            <option value="development">Разработка</option>
+            <option value="support">Поддержка</option>
+          </select></label>
+          <label>Цена, ₸<input id="custom-service-price" type="text" inputmode="decimal" required aria-describedby="service-form-error"></label>
+          <label class="service-form-description">Описание<textarea id="custom-service-description" rows="3" maxlength="2000"></textarea></label>
+        </div>
+        <p id="service-form-error" role="alert"></p>
+        <div class="actions">
+          <button type="submit">Сохранить услугу</button>
+          <button id="cancel-service-edit" type="button">Отмена</button>
+        </div>
+      </form>
       <div class="catalog-filters" role="group" aria-label="Поиск и фильтр услуг">
         <label for="service-search">Поиск по названию
           <input id="service-search" type="search" placeholder="Например, дизайн" aria-controls="service-grid" autocomplete="off">
