@@ -102,7 +102,6 @@ document.querySelectorAll(".service-card button").forEach((button) => {
       unit: "услуга",
       price: button.dataset.servicePrice
     });
-    catalogNotice(`«${button.dataset.serviceName}» добавлена в смету.`);
   });
 });
 const serviceSearch = document.getElementById("service-search");
@@ -112,14 +111,12 @@ function filterCatalog() {
   const query = serviceSearch.value.trim().toLocaleLowerCase("ru-RU");
   const category = serviceCategory.value;
   let count = 0;
-  const cards = document.querySelectorAll(".service-card");
-  cards.forEach((card) => {
+  document.querySelectorAll(".service-card").forEach((card) => {
     const name = card.querySelector("h3").textContent.toLocaleLowerCase("ru-RU");
     card.hidden = !name.includes(query) || (category !== "" && card.dataset.category !== category);
     if (!card.hidden) count += 1;
   });
   document.getElementById("catalog-empty").textContent = count === 0 ? "Услуги не найдены" : "";
-  document.getElementById("catalog-count").textContent = `Всего услуг: ${cards.length}. Показано: ${count}.`;
 }
 
 serviceSearch.addEventListener("input", filterCatalog);
@@ -138,20 +135,10 @@ const customName = document.getElementById("custom-service-name");
 const customDescription = document.getElementById("custom-service-description");
 const customCategory = document.getElementById("custom-service-category");
 const customPrice = document.getElementById("custom-service-price");
+const catalogStatus = document.getElementById("catalog-status");
 const catalogCategories = ["consulting", "development", "support"];
 let customServices = [];
 let editingServiceId = null;
-
-function catalogNotice(message, kind = "success") {
-  const status = document.getElementById("catalog-status");
-  status.dataset.kind = kind;
-  status.textContent = message;
-}
-
-function clearServiceErrors() {
-  document.getElementById("service-form-error").textContent = "";
-  [customName, customDescription, customCategory, customPrice].forEach((field) => field.removeAttribute("aria-invalid"));
-}
 
 function parseServicePrice(value) {
   const text = value.trim();
@@ -165,7 +152,7 @@ function validCustomService(service) {
     typeof service.name === "string" && service.name.trim().length > 0 && service.name.length <= 120 &&
     typeof service.description === "string" && service.description.length <= 2000 &&
     catalogCategories.includes(service.category) && typeof service.price === "number" &&
-    Number.isFinite(service.price) && parseServicePrice(String(service.price)) !== null;
+    Number.isFinite(service.price) && service.price >= 0 && service.price <= Number.MAX_SAFE_INTEGER;
 }
 
 function loadCustomServices() {
@@ -178,7 +165,7 @@ function loadCustomServices() {
     }
     customServices = services;
   } catch {
-    catalogNotice("Не удалось загрузить ваши услуги. Хранилище недоступно или данные повреждены.", "error");
+    catalogStatus.textContent = "Не удалось загрузить ваши услуги. Хранилище недоступно или данные повреждены.";
   }
 }
 
@@ -188,7 +175,7 @@ function storeCustomServices(services) {
     customServices = services;
     return true;
   } catch {
-    catalogNotice("Не удалось сохранить каталог. Изменения не применены. Проверьте доступ к хранилищу браузера.", "error");
+    catalogStatus.textContent = "Не удалось сохранить каталог. Изменения не применены. Проверьте доступ к хранилищу браузера.";
     return false;
   }
 }
@@ -206,7 +193,7 @@ function openServiceForm(service = null) {
   customDescription.value = service ? service.description : "";
   customCategory.value = service ? service.category : "consulting";
   customPrice.value = service ? String(service.price) : "";
-  clearServiceErrors();
+  document.getElementById("service-form-error").textContent = "";
   serviceForm.hidden = false;
   customName.focus();
 }
@@ -230,10 +217,9 @@ function renderCustomServices() {
     const add = document.createElement("button");
     add.type = "button";
     add.textContent = "Добавить в смету";
-    add.addEventListener("click", () => {
-      addItem(true, { "item-name": service.name, quantity: "1", unit: "услуга", price: String(service.price) });
-      catalogNotice(`«${service.name}» добавлена в смету.`);
-    });
+    add.addEventListener("click", () => addItem(true, {
+      "item-name": service.name, quantity: "1", unit: "услуга", price: String(service.price)
+    }));
     const actions = document.createElement("div");
     actions.className = "actions";
     const edit = document.createElement("button");
@@ -246,11 +232,11 @@ function renderCustomServices() {
     remove.textContent = "Удалить";
     remove.setAttribute("aria-label", `Удалить услугу «${service.name}»`);
     remove.addEventListener("click", () => {
-      if (!window.confirm(`Удалить услугу «${service.name}» из каталога? Уже добавленные позиции сметы сохранятся.`)) return;
+      if (!window.confirm(`Удалить услугу «${service.name}» из каталога?`)) return;
       if (!storeCustomServices(customServices.filter((entry) => entry.id !== service.id))) return;
       if (editingServiceId === service.id) closeServiceForm();
       renderCustomServices();
-      catalogNotice(`Услуга «${service.name}» удалена из каталога.`);
+      catalogStatus.textContent = "Услуга удалена из каталога.";
       document.getElementById("add-custom-service").focus();
     });
     actions.append(edit, remove);
@@ -262,21 +248,16 @@ function renderCustomServices() {
 
 serviceForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  clearServiceErrors();
   const name = customName.value.trim();
   const price = parseServicePrice(customPrice.value);
   let error = "";
   let invalidField;
-  if (!name) { error = "Укажите название услуги: одних пробелов недостаточно."; invalidField = customName; }
-  else if (name.length > 120) { error = "Сократите название услуги до 120 символов."; invalidField = customName; }
-  else if (!customPrice.value.trim()) { error = "Укажите цену услуги. Для бесплатной услуги введите 0."; invalidField = customPrice; }
-  else if (customPrice.value.trim().startsWith("-")) { error = "Цена не может быть отрицательной. Введите 0 или положительное число."; invalidField = customPrice; }
-  else if (price === null) { error = "Некорректная цена. Введите число, например 50 000 или 50000,50, максимум два знака после запятой. Максимум — 9 007 199 254 740 991."; invalidField = customPrice; }
+  if (!name || name.length > 120) { error = "Введите название услуги длиной от 1 до 120 символов."; invalidField = customName; }
+  else if (price === null) { error = "Введите неотрицательную цену числом, например 50 000 или 50000,50 (не более двух знаков после запятой)."; invalidField = customPrice; }
   else if (!catalogCategories.includes(customCategory.value)) { error = "Выберите категорию услуги."; invalidField = customCategory; }
   else if (customDescription.value.length > 2000) { error = "Описание должно быть не длиннее 2000 символов."; invalidField = customDescription; }
   document.getElementById("service-form-error").textContent = error;
-  if (error) { invalidField.setAttribute("aria-invalid", "true"); invalidField.focus(); return; }
-  const wasEditing = editingServiceId !== null;
+  if (error) { invalidField.focus(); return; }
   const service = {
     id: editingServiceId || `custom-${Date.now()}-${Math.random().toString(36).slice(2)}`,
     name, description: customDescription.value.trim(), category: customCategory.value, price
@@ -287,10 +268,8 @@ serviceForm.addEventListener("submit", (event) => {
   serviceSearch.value = "";
   serviceCategory.value = "";
   renderCustomServices();
-  catalogNotice(`Услуга «${name}» ${wasEditing ? "изменена" : "добавлена в каталог"}.`);
+  catalogStatus.textContent = "Услуга сохранена.";
 });
-serviceForm.addEventListener("input", clearServiceErrors);
-serviceForm.addEventListener("change", clearServiceErrors);
 document.getElementById("add-custom-service").addEventListener("click", () => openServiceForm());
 document.getElementById("cancel-service-edit").addEventListener("click", closeServiceForm);
 loadCustomServices();
