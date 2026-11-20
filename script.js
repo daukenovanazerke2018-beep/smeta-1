@@ -104,6 +104,32 @@ document.querySelectorAll(".service-card button").forEach((button) => {
     });
   });
 });
+const serviceSearch = document.getElementById("service-search");
+const serviceCategory = document.getElementById("service-category");
+const serviceCards = document.querySelectorAll(".service-card");
+
+function filterCatalog() {
+  const query = serviceSearch.value.trim().toLocaleLowerCase("ru-RU");
+  const category = serviceCategory.value;
+  let count = 0;
+  serviceCards.forEach((card) => {
+    const name = card.querySelector("h3").textContent.toLocaleLowerCase("ru-RU");
+    card.hidden = !name.includes(query) || (category !== "" && card.dataset.category !== category);
+    if (!card.hidden) count += 1;
+  });
+  document.getElementById("catalog-empty").textContent = count === 0 ? "Услуги не найдены" : "";
+}
+
+serviceSearch.addEventListener("input", filterCatalog);
+serviceCategory.addEventListener("change", filterCatalog);
+document.getElementById("reset-catalog-filter").addEventListener("click", () => {
+  serviceSearch.value = "";
+  serviceCategory.value = "";
+  filterCatalog();
+  serviceSearch.focus();
+});
+filterCatalog();
+
 function todayValue() {
   const today = new Date();
   return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
@@ -246,6 +272,7 @@ document.querySelector("main").addEventListener("input", (event) => {
   saveDraft();
 });
 document.querySelector("main").addEventListener("change", (event) => {
+  if (event.target.closest(".service-catalog")) return;
   if (!event.target.matches("input, select, #comment")) return;
   clearCopyResult();
   saveDraft();

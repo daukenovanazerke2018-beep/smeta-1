@@ -62,32 +62,47 @@
     <section class="card screen-only service-catalog" aria-labelledby="catalog-title" aria-describedby="catalog-hint">
       <h2 id="catalog-title">Каталог услуг</h2>
       <p id="catalog-hint" class="hint">Цены указаны в тенге. Нажмите «Добавить в смету», чтобы создать отдельную позицию. Количество и цену можно изменить.</p>
-      <div class="service-grid">
-        <article class="service-card" aria-labelledby="service-consultation">
+      <div class="catalog-filters" role="group" aria-label="Поиск и фильтр услуг">
+        <label for="service-search">Поиск по названию
+          <input id="service-search" type="search" placeholder="Например, дизайн" aria-controls="service-grid" autocomplete="off">
+        </label>
+        <label for="service-category">Категория
+          <select id="service-category" aria-controls="service-grid">
+            <option value="">Все категории</option>
+            <option value="consulting">Консультации</option>
+            <option value="development">Разработка</option>
+            <option value="support">Поддержка</option>
+          </select>
+        </label>
+        <button id="reset-catalog-filter" type="button">Сбросить фильтр</button>
+      </div>
+      <p id="catalog-empty" role="status" aria-live="polite"></p>
+      <div id="service-grid" class="service-grid">
+        <article class="service-card" data-category="consulting" aria-labelledby="service-consultation">
           <h3 id="service-consultation">Консультация</h3>
           <p class="service-description">Обсудим вашу задачу и предложим план дальнейших действий.</p>
           <p class="service-price">15 000 ₸</p>
           <button type="button" data-service-name="Консультация" data-service-price="15000" aria-describedby="catalog-hint">Добавить в смету</button>
         </article>
-        <article class="service-card" aria-labelledby="service-design">
+        <article class="service-card" data-category="development" aria-labelledby="service-design">
           <h3 id="service-design">Разработка дизайна</h3>
           <p class="service-description">Подготовим визуальное оформление с учётом ваших задач и пожеланий.</p>
           <p class="service-price">45 000 ₸</p>
           <button type="button" data-service-name="Разработка дизайна" data-service-price="45000" aria-describedby="catalog-hint">Добавить в смету</button>
         </article>
-        <article class="service-card" aria-labelledby="service-setup">
+        <article class="service-card" data-category="development" aria-labelledby="service-setup">
           <h3 id="service-setup">Настройка сайта</h3>
           <p class="service-description">Настроим основные разделы и параметры сайта для начала работы.</p>
           <p class="service-price">80 000 ₸</p>
           <button type="button" data-service-name="Настройка сайта" data-service-price="80000" aria-describedby="catalog-hint">Добавить в смету</button>
         </article>
-        <article class="service-card" aria-labelledby="service-support">
+        <article class="service-card" data-category="support" aria-labelledby="service-support">
           <h3 id="service-support">Техническая поддержка</h3>
           <p class="service-description">Поможем разобраться с техническими вопросами и устранить неполадки.</p>
           <p class="service-price">25 000 ₸</p>
           <button type="button" data-service-name="Техническая поддержка" data-service-price="25000" aria-describedby="catalog-hint">Добавить в смету</button>
         </article>
-        <article class="service-card" aria-labelledby="service-documentation">
+        <article class="service-card" data-category="development" aria-labelledby="service-documentation">
           <h3 id="service-documentation">Разработка документации</h3>
           <p class="service-description">Составим понятные инструкции и описание рабочих процессов.</p>
           <p class="service-price">35 000 ₸</p>
