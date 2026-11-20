@@ -12,6 +12,8 @@
     <h1 class="screen-only">Смета за 5 минут</h1>
     <h1 id="print-title" class="print-only"></h1>
     <p class="screen-only">Заполните реквизиты и добавьте позиции — смета пересчитается сама.</p>
+    <div class="screen-only"><button id="new-estimate" type="button">Новая смета</button></div>
+    <p id="storage-status" class="screen-only hint" role="status" hidden></p>
     <section class="details card" aria-labelledby="details-title">
       <h2 id="details-title">Реквизиты</h2>
       <div class="details-fields">
@@ -47,7 +49,15 @@
     <section class="card comment-card" aria-label="Комментарий и сохранение">
       <label for="comment">Комментарий</label>
       <textarea id="comment" rows="4" placeholder="Сроки, условия оплаты"></textarea>
-      <button id="save-pdf" type="button">Сохранить PDF</button>
+      <div class="actions screen-only">
+        <button id="save-pdf" type="button">Сохранить PDF</button>
+        <button id="copy-whatsapp" type="button">Скопировать для WhatsApp</button>
+      </div>
+      <p id="copy-status" class="screen-only" role="status" aria-live="polite"></p>
+      <div id="manual-copy" class="screen-only" hidden>
+        <label for="share-text">Скопируйте текст вручную</label>
+        <textarea id="share-text" rows="10" readonly></textarea>
+      </div>
     </section>
     <p class="print-only signature">Подпись ____________________</p>
   </main>

@@ -15,6 +15,9 @@ input, select, textarea, button { min-height: 44px; min-width: 44px; font: inher
 input, select, textarea { width: 100%; background: white; color: inherit; }
 textarea { resize: vertical; margin: 8px 0 16px; }
 .print-only, .print-value { display: none; }
+[hidden] { display: none !important; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+#copy-status:empty { display: none; }
 .item-name { min-width: 180px; }
 .quantity, .price { min-width: 110px; }
 .item-total { white-space: nowrap; font-variant-numeric: tabular-nums; }
