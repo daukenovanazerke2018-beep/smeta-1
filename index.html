@@ -10,15 +10,25 @@
 <body>
   <main>
     <h1>Смета за 5 минут</h1>
-    <p>Добавьте позиции и укажите скидку и НДС — итог пересчитается сразу.</p>
+    <p>Заполните реквизиты и добавьте позиции — смета пересчитается сама.</p>
+    <section class="details card" aria-labelledby="details-title">
+      <h2 id="details-title">Реквизиты</h2>
+      <div class="details-fields">
+        <label>От кого<input id="sender" type="text" autocomplete="organization"></label>
+        <label>Для кого<input id="recipient" type="text"></label>
+        <label>Номер сметы<input id="estimate-number" type="text"></label>
+        <label>Дата<input id="estimate-date" type="date"></label>
+      </div>
+    </section>
+    <section class="card" aria-label="Позиции и расчёт сметы">
     <div class="table-wrap" role="region" aria-label="Позиции сметы" tabindex="0">
       <table>
-        <caption>Позиции сметы</caption>
-        <thead><tr><th scope="col">Наименование</th><th scope="col">Количество</th><th scope="col">Цена</th><th scope="col">Сумма</th><th scope="col">Действие</th></tr></thead>
+        <caption>Позиции</caption>
+        <thead><tr><th scope="col">Наименование</th><th scope="col">Количество</th><th scope="col">Единица</th><th scope="col">Цена</th><th scope="col">Сумма</th><th scope="col">Действие</th></tr></thead>
         <tbody id="items"></tbody>
       </table>
     </div>
-    <button id="add-item" type="button">Добавить позицию</button>
+    <button id="add-item" type="button">+ Добавить позицию</button>
     <section class="settings" aria-label="Скидка, НДС и валюта">
       <label>Скидка, %<input id="discount" type="text" inputmode="decimal" value="0" aria-describedby="discount-hint"></label>
       <label>НДС, %<input id="vat" type="text" inputmode="decimal" value="0"></label>
@@ -32,14 +42,16 @@
       <div id="vat-row" hidden><dt>НДС</dt><dd id="vat-total">0 ₸</dd></div>
       <div class="grand-total"><dt>Итого к оплате</dt><dd id="grand-total">0 ₸</dd></div>
     </dl>
+    </section>
   </main>
   <template id="item-template">
     <tr>
-      <td><input class="item-name" type="text" placeholder="Название позиции"></td>
-      <td><input class="quantity" type="text" inputmode="decimal" value="1"></td>
-      <td><input class="price" type="text" inputmode="decimal" value="0"></td>
-      <td class="item-total">0 ₸</td>
-      <td><button class="remove-item" type="button">Удалить</button></td>
+      <td data-label="Наименование"><input class="item-name" type="text" placeholder="Название позиции"></td>
+      <td data-label="Количество"><input class="quantity" type="text" inputmode="decimal"></td>
+      <td data-label="Единица"><select class="unit"><option>шт</option><option>час</option><option>услуга</option></select></td>
+      <td data-label="Цена"><input class="price" type="text" inputmode="decimal"></td>
+      <td data-label="Сумма"><output class="item-total">0 ₸</output></td>
+      <td data-label="Действие"><button class="remove-item" type="button" aria-label="Удалить позицию">✕</button></td>
     </tr>
   </template>
 </body>

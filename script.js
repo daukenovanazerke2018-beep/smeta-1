@@ -46,27 +46,41 @@ function recalculate() {
   document.getElementById("vat-row").hidden = Math.round(totals.vat) === 0;
 }
 
-function addItem(focus = true) {
-  const fragment = document.getElementById("item-template").content.cloneNode(true);
-  items.append(fragment);
+function labelItems() {
   items.querySelectorAll("tr").forEach((row, index) => {
     row.querySelector(".item-name").setAttribute("aria-label", `Наименование позиции ${index + 1}`);
     row.querySelector(".quantity").setAttribute("aria-label", `Количество позиции ${index + 1}`);
     row.querySelector(".price").setAttribute("aria-label", `Цена позиции ${index + 1}`);
+    row.querySelector(".unit").setAttribute("aria-label", `Единица позиции ${index + 1}`);
     row.querySelector(".remove-item").setAttribute("aria-label", `Удалить позицию ${index + 1}`);
   });
+}
+
+function addItem(focus = true) {
+  const fragment = document.getElementById("item-template").content.cloneNode(true);
+  items.append(fragment);
+  labelItems();
   recalculate();
   if (focus) items.lastElementChild.querySelector("input").focus();
 }
 
 items.addEventListener("input", recalculate);
+items.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" || event.isComposing || event.repeat) return;
+  if (!event.target.matches("input") || event.target.closest("tr") !== items.lastElementChild) return;
+  event.preventDefault();
+  addItem();
+});
 items.addEventListener("click", (event) => {
   if (!event.target.closest(".remove-item")) return;
   event.target.closest("tr").remove();
+  labelItems();
   recalculate();
   addButton.focus();
 });
 [discountInput, vatInput].forEach((input) => input.addEventListener("input", recalculate));
 currencyInput.addEventListener("change", recalculate);
 addButton.addEventListener("click", () => addItem());
+const today = new Date();
+document.getElementById("estimate-date").value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 addItem(false);
