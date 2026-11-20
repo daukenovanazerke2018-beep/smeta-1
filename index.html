@@ -59,6 +59,42 @@
         <textarea id="share-text" rows="10" readonly></textarea>
       </div>
     </section>
+    <section class="card screen-only service-catalog" aria-labelledby="catalog-title" aria-describedby="catalog-hint">
+      <h2 id="catalog-title">Каталог услуг</h2>
+      <p id="catalog-hint" class="hint">Цены указаны в тенге. Добавление услуг в смету пока недоступно.</p>
+      <div class="service-grid">
+        <article class="service-card" aria-labelledby="service-consultation">
+          <h3 id="service-consultation">Консультация</h3>
+          <p class="service-description">Обсудим вашу задачу и предложим план дальнейших действий.</p>
+          <p class="service-price">15 000 ₸</p>
+          <button type="button" disabled aria-describedby="catalog-hint">Добавить в смету</button>
+        </article>
+        <article class="service-card" aria-labelledby="service-design">
+          <h3 id="service-design">Разработка дизайна</h3>
+          <p class="service-description">Подготовим визуальное оформление с учётом ваших задач и пожеланий.</p>
+          <p class="service-price">45 000 ₸</p>
+          <button type="button" disabled aria-describedby="catalog-hint">Добавить в смету</button>
+        </article>
+        <article class="service-card" aria-labelledby="service-setup">
+          <h3 id="service-setup">Настройка сайта</h3>
+          <p class="service-description">Настроим основные разделы и параметры сайта для начала работы.</p>
+          <p class="service-price">80 000 ₸</p>
+          <button type="button" disabled aria-describedby="catalog-hint">Добавить в смету</button>
+        </article>
+        <article class="service-card" aria-labelledby="service-support">
+          <h3 id="service-support">Техническая поддержка</h3>
+          <p class="service-description">Поможем разобраться с техническими вопросами и устранить неполадки.</p>
+          <p class="service-price">25 000 ₸</p>
+          <button type="button" disabled aria-describedby="catalog-hint">Добавить в смету</button>
+        </article>
+        <article class="service-card" aria-labelledby="service-documentation">
+          <h3 id="service-documentation">Разработка документации</h3>
+          <p class="service-description">Составим понятные инструкции и описание рабочих процессов.</p>
+          <p class="service-price">35 000 ₸</p>
+          <button type="button" disabled aria-describedby="catalog-hint">Добавить в смету</button>
+        </article>
+      </div>
+    </section>
     <p class="print-only signature">Подпись ____________________</p>
   </main>
   <template id="item-template">

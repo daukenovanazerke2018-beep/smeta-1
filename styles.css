@@ -34,10 +34,18 @@ label { display: grid; gap: 8px; font-weight: 600; }
 .totals > [hidden] { display: none; }
 dd { margin: 0; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .grand-total { border-top: 2px solid #174e94; font-weight: 700; font-size: clamp(1.25rem, 4vw, 1.6rem); }
+.service-catalog > .hint { margin: -8px 0 20px; }
+.service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px; }
+.service-card { display: flex; flex-direction: column; min-width: 0; padding: 20px; border: 1px solid #d8dfe8; border-radius: 12px; background: white; overflow-wrap: anywhere; }
+.service-card h3 { margin: 0 0 12px; font-size: 1.1rem; }
+.service-description { margin: 0 0 20px; color: #526075; }
+.service-price { margin: auto 0 16px; font-size: 1.3rem; font-weight: 700; color: #174e94; white-space: nowrap; }
+.service-card button:disabled { background: #e7edf5; color: #526075; border-color: #c0ccdc; cursor: not-allowed; }
 @media screen and (max-width: 640px) {
   body { padding: 12px; }
   .card { padding: 16px; }
   .settings, .details-fields { grid-template-columns: minmax(0, 1fr); }
+  .service-grid { grid-template-columns: minmax(0, 1fr); }
   .totals { max-width: none; }
   .totals > div { flex-wrap: wrap; }
   .table-wrap { overflow: visible; margin-top: 0; }
