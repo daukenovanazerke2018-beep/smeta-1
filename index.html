@@ -62,8 +62,9 @@
     <section class="card screen-only service-catalog" aria-labelledby="catalog-title" aria-describedby="catalog-hint">
       <h2 id="catalog-title">Каталог услуг</h2>
       <p id="catalog-hint" class="hint">Цены указаны в тенге. Нажмите «Добавить в смету», чтобы создать отдельную позицию. Количество и цену можно изменить.</p>
+      <p id="catalog-count" class="catalog-count" role="status" aria-live="polite"></p>
       <button id="add-custom-service" type="button">Добавить свою услугу</button>
-      <p id="catalog-status" role="status" aria-live="polite"></p>
+      <p id="catalog-status" class="catalog-status" role="status" aria-live="polite" aria-atomic="true"></p>
       <form id="service-form" class="service-form" aria-labelledby="service-form-title" novalidate hidden>
         <h3 id="service-form-title">Новая услуга</h3>
         <div class="service-form-fields">
@@ -74,7 +75,7 @@
             <option value="support">Поддержка</option>
           </select></label>
           <label>Цена, ₸<input id="custom-service-price" type="text" inputmode="decimal" required aria-describedby="service-form-error"></label>
-          <label class="service-form-description">Описание<textarea id="custom-service-description" rows="3" maxlength="2000"></textarea></label>
+          <label class="service-form-description">Описание<textarea id="custom-service-description" rows="3" maxlength="2000" aria-describedby="service-form-error"></textarea></label>
         </div>
         <p id="service-form-error" role="alert"></p>
         <div class="actions">
