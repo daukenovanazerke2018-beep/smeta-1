@@ -94,6 +94,16 @@ items.addEventListener("click", (event) => {
 [discountInput, vatInput].forEach((input) => input.addEventListener("input", recalculate));
 currencyInput.addEventListener("change", recalculate);
 addButton.addEventListener("click", () => addItem());
+document.querySelectorAll(".service-card button").forEach((button) => {
+  button.addEventListener("click", () => {
+    addItem(true, {
+      "item-name": button.dataset.serviceName,
+      quantity: "1",
+      unit: "услуга",
+      price: button.dataset.servicePrice
+    });
+  });
+});
 function todayValue() {
   const today = new Date();
   return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
