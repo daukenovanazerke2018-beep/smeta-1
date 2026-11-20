@@ -84,3 +84,26 @@ addButton.addEventListener("click", () => addItem());
 const today = new Date();
 document.getElementById("estimate-date").value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 addItem(false);
+
+function preparePrint() {
+  recalculate();
+  const number = document.getElementById("estimate-number").value.trim() || "____";
+  const dateParts = document.getElementById("estimate-date").value.split("-");
+  const date = dateParts.length === 3 ? dateParts.reverse().join(".") : "____";
+  document.getElementById("print-title").textContent = `Смета № ${number} от ${date}`;
+
+  // Текстовые копии позволяют печатать длинные значения без обрезки полями ввода.
+  document.querySelectorAll(".print-value").forEach((element) => element.remove());
+  document.querySelectorAll(".details input, #items input, #items select, #comment").forEach((field) => {
+    const value = document.createElement("span");
+    value.className = "print-value";
+    value.textContent = field.type === "date" ? date : field.value;
+    field.insertAdjacentElement("afterend", value);
+  });
+}
+
+window.addEventListener("beforeprint", preparePrint);
+document.getElementById("save-pdf").addEventListener("click", () => {
+  preparePrint();
+  window.print();
+});

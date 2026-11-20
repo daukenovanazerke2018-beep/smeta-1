@@ -11,8 +11,10 @@ p { line-height: 1.6; }
 table { width: 100%; border-collapse: collapse; }
 caption { text-align: left; font-weight: 700; margin-bottom: 12px; }
 th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #d8dfe8; }
-input, select, button { min-height: 44px; min-width: 44px; font: inherit; border: 1px solid #8795a8; border-radius: 6px; padding: 10px 12px; }
-input, select { width: 100%; background: white; color: inherit; }
+input, select, textarea, button { min-height: 44px; min-width: 44px; font: inherit; border: 1px solid #8795a8; border-radius: 6px; padding: 10px 12px; }
+input, select, textarea { width: 100%; background: white; color: inherit; }
+textarea { resize: vertical; margin: 8px 0 16px; }
+.print-only, .print-value { display: none; }
 .item-name { min-width: 180px; }
 .quantity, .price { min-width: 110px; }
 .item-total { white-space: nowrap; font-variant-numeric: tabular-nums; }
@@ -29,7 +31,7 @@ label { display: grid; gap: 8px; font-weight: 600; }
 .totals > [hidden] { display: none; }
 dd { margin: 0; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .grand-total { border-top: 2px solid #174e94; font-weight: 700; font-size: clamp(1.25rem, 4vw, 1.6rem); }
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
   body { padding: 12px; }
   .card { padding: 16px; }
   .settings, .details-fields { grid-template-columns: minmax(0, 1fr); }
@@ -45,4 +47,37 @@ dd { margin: 0; text-align: right; white-space: nowrap; font-variant-numeric: ta
   .item-name, .quantity, .price { min-width: 0; }
   .remove-item { justify-self: end; }
   input, select { min-width: 0; }
+}
+
+@page { size: A4; margin: 15mm; }
+@media print {
+  :root { color: #000; background: #fff; font-size: 11pt; }
+  body { padding: 0; margin: 0; }
+  main { max-width: none; margin: 0; }
+  .screen-only, button, .settings, .hint,
+  input, select, textarea,
+  th:last-child, td:last-child { display: none !important; }
+  .print-only, .print-value { display: block; }
+  .print-value { white-space: pre-wrap; overflow-wrap: anywhere; font-weight: 400; }
+  h1 { font-size: 20pt; margin: 0 0 8mm; overflow-wrap: anywhere; }
+  h2, caption { font-size: 12pt; margin: 0 0 3mm; }
+  .card { padding: 0; border: 0; border-radius: 0; margin: 0 0 6mm; }
+  .details-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3mm 8mm; }
+  label { gap: 1mm; }
+  .table-wrap { overflow: visible; margin: 0; }
+  table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+  thead { display: table-header-group; }
+  th, td { border: 1px solid #000; padding: 2mm; vertical-align: top; overflow-wrap: anywhere; }
+  th:first-child { width: 36%; }
+  th:nth-child(2) { width: 15%; }
+  th:nth-child(3) { width: 13%; }
+  th:nth-child(4), th:nth-child(5) { width: 18%; }
+  td:nth-child(4), td:nth-child(5) { text-align: right; }
+  tr { break-inside: avoid; }
+  .item-total { white-space: normal; }
+  .totals { width: 90mm; max-width: 100%; margin: 5mm 0 0 auto; break-inside: avoid; }
+  .totals > div { padding: 2mm 0; }
+  .grand-total { border-color: #000; font-size: 13pt; }
+  .comment-card { margin-top: 6mm; }
+  .signature { margin-top: 10mm; break-inside: avoid; }
 }

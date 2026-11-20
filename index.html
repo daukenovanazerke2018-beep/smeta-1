@@ -9,8 +9,9 @@
 </head>
 <body>
   <main>
-    <h1>Смета за 5 минут</h1>
-    <p>Заполните реквизиты и добавьте позиции — смета пересчитается сама.</p>
+    <h1 class="screen-only">Смета за 5 минут</h1>
+    <h1 id="print-title" class="print-only"></h1>
+    <p class="screen-only">Заполните реквизиты и добавьте позиции — смета пересчитается сама.</p>
     <section class="details card" aria-labelledby="details-title">
       <h2 id="details-title">Реквизиты</h2>
       <div class="details-fields">
@@ -43,6 +44,12 @@
       <div class="grand-total"><dt>Итого к оплате</dt><dd id="grand-total">0 ₸</dd></div>
     </dl>
     </section>
+    <section class="card comment-card" aria-label="Комментарий и сохранение">
+      <label for="comment">Комментарий</label>
+      <textarea id="comment" rows="4" placeholder="Сроки, условия оплаты"></textarea>
+      <button id="save-pdf" type="button">Сохранить PDF</button>
+    </section>
+    <p class="print-only signature">Подпись ____________________</p>
   </main>
   <template id="item-template">
     <tr>
